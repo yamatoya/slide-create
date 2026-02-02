@@ -1,0 +1,19 @@
+<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <defs>
+    <linearGradient id="grad23" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1B4565"/>
+      <stop offset="100%" style="stop-color:#3E9BA4"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="120" fill="url(#grad23)"/>
+
+  <!-- Semi-transparent card -->
+  <rect x="20" y="30" width="160" height="60" rx="6" fill="white" opacity="0.2"/>
+
+  <!-- Question text -->
+  <rect x="35" y="50" width="130" height="10" rx="2" fill="white"/>
+
+  <!-- Sub question -->
+  <rect x="50" y="68" width="100" height="5" rx="1" fill="white" opacity="0.7"/>
+</svg>

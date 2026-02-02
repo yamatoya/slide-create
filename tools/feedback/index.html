@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide Feedback</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: { 700: '#1B4565', 800: '#15374d' },
+            teal: { 500: '#3E9BA4', 600: '#358a92' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .pattern-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .pattern-card.selected { ring: 2px solid #3E9BA4; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- ヘッダー -->
+  <header class="bg-navy-700 text-white px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <h1 class="font-bold">Slide Feedback</h1>
+      <select id="slideSelect" class="bg-navy-800 text-white px-3 py-1 rounded text-sm">
+        <option value="example.md">example.md</option>
+        <option value="go-conference-2026/slide.md">go-conference-2026</option>
+        <option value="internal-study-202602/slide.md">internal-study-202602</option>
+      </select>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="prevSlide()" class="bg-navy-800 hover:bg-gray-600 px-3 py-1 rounded">←</button>
+      <span id="slideCounter" class="text-sm">1 / 40</span>
+      <button onclick="nextSlide()" class="bg-navy-800 hover:bg-gray-600 px-3 py-1 rounded">→</button>
+      <button onclick="openInNewTab()" class="bg-navy-800 hover:bg-gray-600 px-3 py-1 rounded text-sm ml-4">新しいタブで開く</button>
+      <button onclick="toggleFullscreen()" class="bg-navy-800 hover:bg-gray-600 px-3 py-1 rounded text-sm">フルスクリーン</button>
+      <button onclick="toggleCommentPanel()" class="bg-teal-500 hover:bg-teal-600 px-3 py-1 rounded text-sm flex items-center gap-1">
+        <span>●</span>コメント
+      </button>
+    </div>
+  </header>
+
+  <div class="flex h-[calc(100vh-56px)]">
+    <!-- スライドプレビュー -->
+    <div id="previewArea" class="flex-1 bg-gray-800 p-4 flex items-center justify-center">
+      <iframe id="slideFrame" class="bg-white shadow-2xl" style="width: 960px; height: 540px; border: none;"></iframe>
+    </div>
+
+    <!-- コメントパネル -->
+    <div id="commentPanel" class="w-80 bg-white border-l border-gray-200 flex flex-col">
+      <div class="p-4 border-b border-gray-200">
+        <h2 class="font-bold text-gray-800">修正指示</h2>
+        <p id="slideTitle" class="text-sm text-gray-500 mt-1">スライド 1: タイトル</p>
+      </div>
+
+      <!-- このスライドのコメント -->
+      <div class="p-4 border-b border-gray-200">
+        <label class="text-sm text-gray-600">このスライドのコメント</label>
+        <div id="currentSlideComments" class="mt-2 space-y-2">
+          <!-- コメントがここに表示される -->
+        </div>
+      </div>
+
+      <!-- 新しいコメント入力 -->
+      <div class="p-4 border-b border-gray-200 flex-1 overflow-auto">
+        <textarea id="newComment" class="w-full h-24 border border-gray-300 rounded p-2 text-sm resize-none" placeholder="新しいコメントを追加..."></textarea>
+
+        <!-- クイックアクションボタン -->
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button onclick="insertQuickAction('style')" class="px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded text-xs">スタイル整形</button>
+          <button onclick="insertQuickAction('layout')" class="px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded text-xs">レイアウト修正</button>
+          <button onclick="openLayoutModal()" class="px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded text-xs">レイアウト例指定</button>
+          <button onclick="insertQuickAction('illustration')" class="px-2 py-1 bg-yellow-100 hover:bg-yellow-200 rounded text-xs flex items-center gap-1">
+            <span>🎨</span>説明イラスト作成
+          </button>
+          <button onclick="insertQuickAction('background')" class="px-2 py-1 bg-green-100 hover:bg-green-200 rounded text-xs flex items-center gap-1">
+            <span>🖼</span>背景画像作成
+          </button>
+        </div>
+
+        <button onclick="addComment()" class="w-full mt-3 bg-teal-500 hover:bg-teal-600 text-white py-2 rounded font-medium">追加</button>
+      </div>
+
+      <!-- コメント一覧 -->
+      <div class="p-4 border-t border-gray-200 flex-1 overflow-auto">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-medium text-gray-700">コメント一覧</span>
+          <span id="commentCount" class="bg-teal-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+        </div>
+        <div id="commentList" class="space-y-2 text-sm">
+          <!-- 全コメントリスト -->
+        </div>
+      </div>
+
+      <!-- フッターアクション -->
+      <div class="p-3 border-t border-gray-200 flex items-center justify-between bg-gray-50">
+        <button onclick="copyJSON()" class="text-xs text-gray-600 hover:text-gray-800 flex items-center gap-1">
+          <span>📋</span>JSON<br>コピー
+        </button>
+        <button onclick="clearAllComments()" class="text-xs text-gray-600 hover:text-red-600 flex items-center gap-1">
+          <span>🗑</span>全削除
+        </button>
+        <button onclick="toggleCommentPanel()" class="text-xs text-gray-600 hover:text-gray-800">× 閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- レイアウト選択モーダル -->
+  <div id="layoutModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg w-[900px] max-h-[80vh] overflow-hidden">
+      <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+        <h3 class="font-bold text-lg">レイアウトパターンを選択</h3>
+        <button onclick="closeLayoutModal()" class="text-gray-500 hover:text-gray-700 text-xl">×</button>
+      </div>
+      <div id="layoutPatterns" class="p-4 overflow-auto max-h-[60vh]">
+        <!-- パターンがここに表示される -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 状態管理
+    let currentSlide = 1;
+    let totalSlides = 1;  // 初期値は1、後でMarpから取得
+    let comments = {};
+    let currentSlideFile = 'example.md';
+
+    // Marpサーバーのベース URL（プロキシ経由）
+    const MARP_BASE_URL = '/marp';
+
+    // Marpサーバーからスライド総数を取得
+    async function fetchTotalSlides() {
+      try {
+        const response = await fetch(`${MARP_BASE_URL}/${currentSlideFile}`);
+        const html = await response.text();
+        // MarpのHTMLでは各スライドが<section>タグで囲まれている
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const sections = doc.querySelectorAll('section');
+        if (sections.length > 0) {
+          totalSlides = sections.length;
+        }
+        updateSlideCounter();
+      } catch (e) {
+        console.error('スライド総数の取得に失敗:', e);
+      }
+    }
+
+    // スライドカウンター更新
+    function updateSlideCounter() {
+      document.getElementById('slideCounter').textContent = `${currentSlide} / ${totalSlides}`;
+      document.getElementById('slideTitle').textContent = `スライド ${currentSlide}`;
+    }
+
+    // レイアウトパターンデータ（SVGサムネイル付き）
+    const layoutPatterns = {
+      'A. タイトル・セクション系': [
+        { id: 1, name: 'タイトルスライド', desc: 'プレゼンの表紙', svg: 'layout-01-title.svg' },
+        { id: 2, name: 'セクション開始スライド', desc: '新しい章の始まりを印象づける', svg: 'layout-02-section-start.svg' },
+        { id: 3, name: 'セクション終了・まとめ', desc: '章の要点を整理して次へつなげる', svg: 'layout-03-summary.svg' },
+        { id: 4, name: '目次スライド', desc: '講演全体の構成を示す', svg: 'layout-04-toc.svg' },
+        { id: 5, name: 'クロージングスライド', desc: '感謝と連絡先を伝える', svg: 'layout-05-closing.svg' },
+      ],
+      'B. カラムレイアウト系': [
+        { id: 6, name: '2カラム比較（Before/After）', desc: '変化を左右で対比させるパターン', svg: 'layout-06-two-col-compare.svg' },
+        { id: 7, name: '2カラム（テキスト+画像）', desc: 'テキストと画像を横並びに配置', svg: 'layout-07-text-image.svg' },
+        { id: '7b', name: '2カラム（画像+テキスト）', desc: '画像とテキストを横並びに配置（逆パターン）', svg: 'layout-07b-image-text.svg' },
+        { id: 8, name: '3カラム（画像+テキスト）', desc: '左画像、右2列テキスト', svg: 'layout-08-three-col-image.svg' },
+        { id: '8b', name: '3カラム均等', desc: '3つの概念を均等に並べる', svg: 'layout-08b-three-col-equal.svg' },
+      ],
+      'C. 数値・統計系': [
+        { id: 9, name: '3カラム統計', desc: '3つの統計データを強調', svg: 'layout-09-stats-three.svg' },
+        { id: 10, name: '4カラム統計', desc: '4つのKPIを並列表示', svg: 'layout-10-stats-four.svg' },
+        { id: 22, name: '大きな数字', desc: 'インパクトのある数値表示', svg: 'layout-22-big-number.svg' },
+      ],
+      'D. 引用・コード系': [
+        { id: 11, name: '引用パネル', desc: '名言や参考文献を引用', svg: 'layout-11-quote.svg' },
+        { id: 12, name: 'コードブロック', desc: 'ソースコードを表示', svg: 'layout-12-code.svg' },
+        { id: 13, name: 'コード+説明', desc: 'コードと解説の2カラム', svg: 'layout-13-code-explain.svg' },
+      ],
+      'E. プロセス・フロー系': [
+        { id: 14, name: 'タイムライン', desc: '経歴や歴史を表示', svg: 'layout-14-timeline.svg' },
+        { id: 15, name: 'ステップ表示', desc: '手順やプロセスを説明', svg: 'layout-15-steps.svg' },
+        { id: 16, name: 'フロー図（横）', desc: 'プロセスやワークフロー', svg: 'layout-16-flow.svg' },
+      ],
+      'F. リスト・テーブル系': [
+        { id: 17, name: 'テーブル', desc: 'データの比較や一覧', svg: 'layout-17-table.svg' },
+        { id: 18, name: 'アイコン付きリスト', desc: '機能やサービスを紹介', svg: 'layout-18-list-icons.svg' },
+        { id: 19, name: 'Pros/Cons比較', desc: 'メリット・デメリット', svg: 'layout-19-proscons.svg' },
+        { id: 26, name: 'チェックリスト', desc: 'To-Doや進捗を表示', svg: 'layout-26-checklist.svg' },
+      ],
+      'G. 画像・背景系': [
+        { id: 20, name: '全画面画像', desc: 'インパクトのあるビジュアル', svg: 'layout-20-fullscreen-image.svg' },
+        { id: 21, name: '分割（画像+テキスト）', desc: '左右50%分割', svg: 'layout-21-split-image.svg' },
+        { id: 24, name: 'デモ画面', desc: 'ブラウザ風モックアップ', svg: 'layout-24-demo.svg' },
+      ],
+      'H. 強調・特殊系': [
+        { id: 23, name: '問いかけスライド', desc: '主題の提示や問いかけ', svg: 'layout-23-question.svg' },
+        { id: 25, name: 'ハイライトボックス', desc: '重要なメッセージを強調', svg: 'layout-25-highlight-box.svg' },
+        { id: 27, name: 'アイコングリッド', desc: '6つの項目を整理', svg: 'layout-27-icons-grid.svg' },
+        { id: 28, name: 'ダイアグラム', desc: '中央ノード+接続', svg: 'layout-28-diagram.svg' },
+        { id: 29, name: '進捗アジェンダ', desc: '現在の進行位置を表示', svg: 'layout-29-agenda-progress.svg' },
+        { id: 30, name: 'Q&Aスライド', desc: '質疑応答への誘導', svg: 'layout-30-qna.svg' },
+      ],
+    };
+
+    // クイックアクション定義
+    const quickActions = {
+      style: '/slide-style-rector をつかってスタイルを整える',
+      layout: '/layout-fix をつかってレイアウト崩れを修正して',
+      illustration: '/ergon をつかって説明イラストを作成して挿入して',
+      background: '/ergon をつかって背景画像を作成して挿入して',
+    };
+
+    // 初期化
+    async function init() {
+      loadComments();
+      await fetchTotalSlides();  // スライド総数を取得
+      updateSlideFrame();
+      renderLayoutPatterns();
+
+      // iframeのloadイベントでスライド情報を更新
+      document.getElementById('slideFrame').addEventListener('load', () => {
+        updateSlideCounter();
+        renderCurrentSlideComments();
+      });
+
+      document.getElementById('slideSelect').addEventListener('change', async (e) => {
+        currentSlideFile = e.target.value;
+        currentSlide = 1;
+        loadComments();  // スライドファイル変更時にコメントを再読み込み
+        await fetchTotalSlides();  // 新しいファイルのスライド総数を取得
+        updateSlideFrame();
+      });
+    }
+
+    // スライドフレーム更新
+    function updateSlideFrame() {
+      const frame = document.getElementById('slideFrame');
+
+      // プロキシ経由でMarpサーバーにアクセス
+      // example.md → /marp/example.md#1
+      // go-conference-2026/slide.md → /marp/go-conference-2026/slide.md#1
+      const slidePath = currentSlideFile;
+      frame.src = `${MARP_BASE_URL}/${slidePath}#${currentSlide}`;
+
+      updateSlideCounter();
+      renderCurrentSlideComments();
+    }
+
+    // ナビゲーション
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlideFrame();
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlideFrame();
+      }
+    }
+
+    // キーボードショートカット
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+    });
+
+    // コメント追加
+    function addComment() {
+      const textarea = document.getElementById('newComment');
+      const text = textarea.value.trim();
+      if (!text) return;
+
+      if (!comments[currentSlide]) {
+        comments[currentSlide] = [];
+      }
+      comments[currentSlide].push(text);
+      textarea.value = '';
+      saveComments();
+      renderCurrentSlideComments();
+      renderCommentList();
+    }
+
+    // クイックアクション挿入
+    function insertQuickAction(type) {
+      const textarea = document.getElementById('newComment');
+      const action = quickActions[type];
+      textarea.value = textarea.value ? textarea.value + '\n' + action : action;
+      textarea.focus();
+    }
+
+    // 現在のスライドのコメント表示
+    function renderCurrentSlideComments() {
+      const container = document.getElementById('currentSlideComments');
+      const slideComments = comments[currentSlide] || [];
+
+      if (slideComments.length === 0) {
+        container.innerHTML = '<p class="text-gray-400 text-sm">ここにコメントを追加</p>';
+        return;
+      }
+
+      container.innerHTML = slideComments.map((comment, idx) => `
+        <div class="bg-gray-50 p-2 rounded text-sm flex items-start justify-between group">
+          <span class="flex-1">${escapeHtml(comment)}</span>
+          <button onclick="deleteComment(${currentSlide}, ${idx})" class="text-gray-400 hover:text-red-500 ml-2 opacity-0 group-hover:opacity-100">×</button>
+        </div>
+      `).join('');
+    }
+
+    // コメント一覧表示
+    function renderCommentList() {
+      const container = document.getElementById('commentList');
+      const allComments = [];
+
+      Object.entries(comments).forEach(([slide, slideComments]) => {
+        slideComments.forEach((comment, idx) => {
+          allComments.push({ slide: parseInt(slide), comment, idx });
+        });
+      });
+
+      document.getElementById('commentCount').textContent = allComments.length;
+
+      if (allComments.length === 0) {
+        container.innerHTML = '<p class="text-gray-400">コメントなし</p>';
+        return;
+      }
+
+      container.innerHTML = allComments.map(({ slide, comment }) => `
+        <div class="bg-gray-50 p-2 rounded cursor-pointer hover:bg-gray-100" onclick="goToSlide(${slide})">
+          <div class="flex items-center justify-between">
+            <span class="font-medium text-gray-700">スライド ${slide}</span>
+          </div>
+          <p class="text-gray-600 text-xs mt-1 truncate">${escapeHtml(comment)}</p>
+        </div>
+      `).join('');
+    }
+
+    // スライドへ移動
+    function goToSlide(slide) {
+      currentSlide = slide;
+      updateSlideFrame();
+    }
+
+    // コメント削除
+    function deleteComment(slide, idx) {
+      comments[slide].splice(idx, 1);
+      if (comments[slide].length === 0) {
+        delete comments[slide];
+      }
+      saveComments();
+      renderCurrentSlideComments();
+      renderCommentList();
+    }
+
+    // 全削除
+    function clearAllComments() {
+      if (confirm('すべてのコメントを削除しますか？')) {
+        comments = {};
+        saveComments();
+        renderCurrentSlideComments();
+        renderCommentList();
+      }
+    }
+
+    // JSON出力
+    function copyJSON() {
+      const output = {
+        file: `slides/${currentSlideFile}`,
+        timestamp: new Date().toISOString(),
+        feedback: Object.entries(comments).map(([slide, slideComments]) => ({
+          slide: parseInt(slide),
+          comments: slideComments
+        }))
+      };
+
+      navigator.clipboard.writeText(JSON.stringify(output, null, 2));
+      alert('JSONをクリップボードにコピーしました');
+    }
+
+    // LocalStorage
+    function saveComments() {
+      localStorage.setItem(`feedback_${currentSlideFile}`, JSON.stringify(comments));
+    }
+
+    function loadComments() {
+      const saved = localStorage.getItem(`feedback_${currentSlideFile}`);
+      comments = saved ? JSON.parse(saved) : {};
+      renderCommentList();
+    }
+
+    // パネル表示切替
+    function toggleCommentPanel() {
+      const panel = document.getElementById('commentPanel');
+      panel.classList.toggle('hidden');
+    }
+
+    // フルスクリーン
+    function toggleFullscreen() {
+      const frame = document.getElementById('slideFrame');
+      if (frame.requestFullscreen) {
+        frame.requestFullscreen();
+      }
+    }
+
+    // 新しいタブで開く
+    function openInNewTab() {
+      window.open(`${MARP_BASE_URL}/${currentSlideFile}#${currentSlide}`, '_blank');
+    }
+
+    // レイアウトモーダル
+    function openLayoutModal() {
+      document.getElementById('layoutModal').classList.remove('hidden');
+      document.getElementById('layoutModal').classList.add('flex');
+    }
+
+    function closeLayoutModal() {
+      document.getElementById('layoutModal').classList.add('hidden');
+      document.getElementById('layoutModal').classList.remove('flex');
+    }
+
+    function selectLayout(id, name) {
+      const textarea = document.getElementById('newComment');
+      const prompt = `このスライドを「パターン${id}: ${name}」のレイアウトに変更して`;
+      textarea.value = textarea.value ? textarea.value + '\n' + prompt : prompt;
+      closeLayoutModal();
+      textarea.focus();
+    }
+
+    // レイアウトパターン表示（SVGサムネイル使用）
+    function renderLayoutPatterns() {
+      const container = document.getElementById('layoutPatterns');
+      let html = '';
+
+      Object.entries(layoutPatterns).forEach(([category, patterns]) => {
+        html += `<h4 class="font-bold text-gray-700 mt-6 mb-3 first:mt-0">${category}</h4>`;
+        html += '<div class="grid grid-cols-3 gap-4">';
+
+        patterns.forEach(p => {
+          html += `
+            <div class="pattern-card border border-gray-200 rounded-lg overflow-hidden cursor-pointer transition-all hover:border-teal-500 hover:shadow-md"
+                 onclick="selectLayout('${p.id}', '${p.name}')">
+              <div class="bg-gray-50 p-2 flex items-center justify-center" style="height: 100px;">
+                <img src="svg/${p.svg}" alt="${p.name}" class="w-full h-full object-contain" />
+              </div>
+              <div class="p-2 bg-white border-t border-gray-100">
+                <div class="text-xs text-teal-600 font-medium">${p.id}</div>
+                <div class="text-sm font-bold text-gray-800">${p.name}</div>
+                <div class="text-xs text-gray-500 mt-0.5">${p.desc}</div>
+              </div>
+            </div>
+          `;
+        });
+
+        html += '</div>';
+      });
+
+      container.innerHTML = html;
+    }
+
+    // エスケープ
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // 初期化実行
+    init();
+  </script>
+</body>
+</html>

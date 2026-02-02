@@ -1,0 +1,32 @@
+<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Light background -->
+  <rect width="200" height="120" fill="#f8f9fa"/>
+
+  <!-- Title -->
+  <rect x="15" y="10" width="60" height="8" rx="2" fill="#1B4565"/>
+
+  <!-- Progress indicator -->
+  <rect x="120" y="10" width="65" height="8" rx="4" fill="#dee2e6"/>
+  <rect x="120" y="10" width="25" height="8" rx="4" fill="#3E9BA4"/>
+
+  <!-- Agenda items -->
+  <!-- Item 1: Completed -->
+  <rect x="15" y="28" width="170" height="18" rx="4" fill="#e9ecef"/>
+  <circle cx="28" cy="37" r="6" fill="#9ca3af"/>
+  <rect x="42" y="33" width="80" height="5" rx="1" fill="#9ca3af"/>
+
+  <!-- Item 2: Current -->
+  <rect x="15" y="52" width="170" height="18" rx="4" fill="#E8F5F5" stroke="#3E9BA4" stroke-width="2"/>
+  <circle cx="28" cy="61" r="6" fill="#3E9BA4"/>
+  <rect x="42" y="57" width="100" height="5" rx="1" fill="#1B4565"/>
+
+  <!-- Item 3: Upcoming -->
+  <rect x="15" y="76" width="170" height="18" rx="4" fill="white" stroke="#dee2e6"/>
+  <circle cx="28" cy="85" r="6" fill="white" stroke="#dee2e6"/>
+  <rect x="42" y="81" width="90" height="5" rx="1" fill="#9ca3af"/>
+
+  <!-- Item 4: Upcoming -->
+  <rect x="15" y="100" width="170" height="18" rx="4" fill="white" stroke="#dee2e6"/>
+  <circle cx="28" cy="109" r="6" fill="white" stroke="#dee2e6"/>
+  <rect x="42" y="105" width="75" height="5" rx="1" fill="#9ca3af"/>
+</svg>

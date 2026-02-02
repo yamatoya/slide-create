@@ -1,0 +1,26 @@
+<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Light background -->
+  <rect width="200" height="120" fill="#f8f9fa"/>
+
+  <!-- Title -->
+  <rect x="15" y="10" width="80" height="8" rx="2" fill="#1B4565"/>
+
+  <!-- Checklist items -->
+  <!-- Item 1: Checked -->
+  <rect x="18" y="28" width="14" height="14" rx="3" fill="#10b981"/>
+  <path d="M22 35 L26 39 L34 31" stroke="white" stroke-width="2" fill="none"/>
+  <rect x="40" y="32" width="100" height="5" rx="1" fill="#374151"/>
+
+  <!-- Item 2: Checked -->
+  <rect x="18" y="50" width="14" height="14" rx="3" fill="#10b981"/>
+  <path d="M22 57 L26 61 L34 53" stroke="white" stroke-width="2" fill="none"/>
+  <rect x="40" y="54" width="90" height="5" rx="1" fill="#374151"/>
+
+  <!-- Item 3: Unchecked -->
+  <rect x="18" y="72" width="14" height="14" rx="3" fill="white" stroke="#dee2e6"/>
+  <rect x="40" y="76" width="110" height="5" rx="1" fill="#9ca3af"/>
+
+  <!-- Item 4: Unchecked -->
+  <rect x="18" y="94" width="14" height="14" rx="3" fill="white" stroke="#dee2e6"/>
+  <rect x="40" y="98" width="85" height="5" rx="1" fill="#9ca3af"/>
+</svg>

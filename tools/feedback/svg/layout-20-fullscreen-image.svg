@@ -1,0 +1,13 @@
+<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Full image background -->
+  <rect width="200" height="120" fill="#e9ecef"/>
+
+  <!-- Image icon in center -->
+  <rect x="70" y="35" width="60" height="45" rx="4" fill="#9ca3af"/>
+  <circle cx="85" cy="50" r="8" fill="#dee2e6"/>
+  <polygon points="75,72 100,52 125,72" fill="#dee2e6"/>
+
+  <!-- Optional overlay text -->
+  <rect x="60" y="90" width="80" height="8" rx="2" fill="rgba(27,69,101,0.8)"/>
+  <rect x="70" y="92" width="60" height="4" rx="1" fill="white"/>
+</svg>

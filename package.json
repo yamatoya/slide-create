@@ -1,0 +1,14 @@
+{
+  "name": "slide-create",
+  "version": "1.0.0",
+  "description": "Marpを使用したプレゼンテーション資料作成プロジェクト",
+  "scripts": {
+    "preview": "marp --preview",
+    "build": "marp slides/**/*.md --output dist --html",
+    "build:pdf": "marp slides/**/*.md --output dist --pdf",
+    "watch": "marp --watch slides/**/*.md --output dist --html"
+  },
+  "devDependencies": {
+    "@marp-team/marp-cli": "^4.0.0"
+  }
+}

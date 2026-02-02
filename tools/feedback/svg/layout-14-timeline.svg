@@ -1,0 +1,36 @@
+<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Light background -->
+  <rect width="200" height="120" fill="#f8f9fa"/>
+
+  <!-- Title -->
+  <rect x="15" y="10" width="80" height="8" rx="2" fill="#1B4565"/>
+
+  <!-- Timeline line -->
+  <line x1="25" y1="55" x2="175" y2="55" stroke="#dee2e6" stroke-width="2"/>
+
+  <!-- Point 1 -->
+  <circle cx="40" cy="55" r="6" fill="#1B4565"/>
+  <rect x="30" y="65" width="20" height="4" rx="1" fill="#374151"/>
+  <rect x="25" y="73" width="30" height="3" rx="1" fill="#9ca3af"/>
+
+  <!-- Point 2 -->
+  <circle cx="80" cy="55" r="6" fill="#3E9BA4"/>
+  <rect x="70" y="65" width="20" height="4" rx="1" fill="#374151"/>
+  <rect x="65" y="73" width="30" height="3" rx="1" fill="#9ca3af"/>
+
+  <!-- Point 3 -->
+  <circle cx="120" cy="55" r="6" fill="#1B4565"/>
+  <rect x="110" y="65" width="20" height="4" rx="1" fill="#374151"/>
+  <rect x="105" y="73" width="30" height="3" rx="1" fill="#9ca3af"/>
+
+  <!-- Point 4 -->
+  <circle cx="160" cy="55" r="6" fill="#3E9BA4"/>
+  <rect x="150" y="65" width="20" height="4" rx="1" fill="#374151"/>
+  <rect x="145" y="73" width="30" height="3" rx="1" fill="#9ca3af"/>
+
+  <!-- Labels above -->
+  <rect x="30" y="38" width="20" height="3" rx="1" fill="#6b7280"/>
+  <rect x="70" y="38" width="20" height="3" rx="1" fill="#6b7280"/>
+  <rect x="110" y="38" width="20" height="3" rx="1" fill="#6b7280"/>
+  <rect x="150" y="38" width="20" height="3" rx="1" fill="#6b7280"/>
+</svg>

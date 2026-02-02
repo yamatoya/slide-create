@@ -1,0 +1,39 @@
+<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Light background -->
+  <rect width="200" height="120" fill="#f8f9fa"/>
+
+  <!-- Title -->
+  <rect x="15" y="10" width="80" height="8" rx="2" fill="#1B4565"/>
+
+  <!-- Flow boxes -->
+  <rect x="12" y="35" width="40" height="50" rx="4" fill="white" stroke="#1B4565" stroke-width="2"/>
+  <rect x="18" y="42" width="28" height="5" rx="1" fill="#1B4565"/>
+  <rect x="18" y="52" width="28" height="3" rx="1" fill="#9ca3af"/>
+  <rect x="18" y="59" width="25" height="3" rx="1" fill="#9ca3af"/>
+
+  <!-- Arrow 1 -->
+  <path d="M55 60 L68 60" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <rect x="70" y="35" width="40" height="50" rx="4" fill="white" stroke="#3E9BA4" stroke-width="2"/>
+  <rect x="76" y="42" width="28" height="5" rx="1" fill="#3E9BA4"/>
+  <rect x="76" y="52" width="28" height="3" rx="1" fill="#9ca3af"/>
+  <rect x="76" y="59" width="25" height="3" rx="1" fill="#9ca3af"/>
+
+  <!-- Arrow 2 -->
+  <path d="M113 60 L126 60" stroke="#6b7280" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <rect x="128" y="35" width="40" height="50" rx="4" fill="white" stroke="#1B4565" stroke-width="2"/>
+  <rect x="134" y="42" width="28" height="5" rx="1" fill="#1B4565"/>
+  <rect x="134" y="52" width="28" height="3" rx="1" fill="#9ca3af"/>
+  <rect x="134" y="59" width="25" height="3" rx="1" fill="#9ca3af"/>
+
+  <!-- Arrowhead marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <!-- Bottom note -->
+  <rect x="50" y="100" width="100" height="3" rx="1" fill="#dee2e6"/>
+</svg>

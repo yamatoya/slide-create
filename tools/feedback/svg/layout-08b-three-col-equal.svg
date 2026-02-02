@@ -1,0 +1,28 @@
+<svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Light background -->
+  <rect width="200" height="120" fill="#f8f9fa"/>
+
+  <!-- Title -->
+  <rect x="15" y="10" width="80" height="8" rx="2" fill="#1B4565"/>
+
+  <!-- Card 1 -->
+  <rect x="12" y="25" width="55" height="80" rx="4" fill="white" stroke="#dee2e6"/>
+  <rect x="18" y="32" width="35" height="4" rx="1" fill="#1B4565"/>
+  <rect x="18" y="42" width="43" height="3" rx="1" fill="#9ca3af"/>
+  <rect x="18" y="49" width="40" height="3" rx="1" fill="#9ca3af"/>
+  <rect x="18" y="56" width="43" height="3" rx="1" fill="#9ca3af"/>
+
+  <!-- Card 2 -->
+  <rect x="72" y="25" width="55" height="80" rx="4" fill="white" stroke="#dee2e6"/>
+  <rect x="78" y="32" width="35" height="4" rx="1" fill="#3E9BA4"/>
+  <rect x="78" y="42" width="43" height="3" rx="1" fill="#9ca3af"/>
+  <rect x="78" y="49" width="40" height="3" rx="1" fill="#9ca3af"/>
+  <rect x="78" y="56" width="43" height="3" rx="1" fill="#9ca3af"/>
+
+  <!-- Card 3 -->
+  <rect x="132" y="25" width="55" height="80" rx="4" fill="white" stroke="#dee2e6"/>
+  <rect x="138" y="32" width="35" height="4" rx="1" fill="#1B4565"/>
+  <rect x="138" y="42" width="43" height="3" rx="1" fill="#9ca3af"/>
+  <rect x="138" y="49" width="40" height="3" rx="1" fill="#9ca3af"/>
+  <rect x="138" y="56" width="43" height="3" rx="1" fill="#9ca3af"/>
+</svg>

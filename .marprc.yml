@@ -1,0 +1,5 @@
+# Marp CLI設定ファイル
+html: true
+theme: default
+themeSet:
+  - ./themes
