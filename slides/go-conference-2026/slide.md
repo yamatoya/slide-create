@@ -20,7 +20,7 @@ _paginate: false
 **〜将来、あなたのアイデアがGoに入るかもしれない〜**
 
 <div class="mt-16 text-right text-em-lg opacity-80">
-Go Conference 2026 / Your Name
+Go Conference mini in Sendai 2026 / pooh
 </div>
 
 </div>
@@ -66,21 +66,28 @@ Go Conference 2026 / Your Name
 
 ## 今日お話しすること
 
-<div class="mt-6 space-y-5">
+<!-- 目次スライド: 3カラムレイアウト -->
+<div class="grid grid-cols-3 gap-6 mt-8">
 
-<div class="bg-gray-50 rounded-xl shadow p-5 border-l-4 border-[#1B4565]">
-<h3 class="text-em-xl font-bold">1. Goプロポーザルプロセスの全体像</h3>
-<p class="text-em-base text-gray-600 mt-1">Issue作成からAccept、実装までの流れ</p>
+<div class="bg-gradient-to-br from-[#1B4565] to-[#3E9BA4] text-white rounded-xl shadow-lg p-6 flex flex-col">
+<div class="text-em-3xl font-bold opacity-30 mb-2">01</div>
+<h3 class="text-em-lg font-bold mb-2">プロポーザルプロセスの全体像</h3>
+<p class="text-em-sm opacity-80 flex-grow">Issue作成からAccept、実装までの流れ</p>
+<div class="mt-4 text-em-sm opacity-60">スライド 5-11</div>
 </div>
 
-<div class="bg-gray-50 rounded-xl shadow p-5 border-l-4 border-[#3E9BA4]">
-<h3 class="text-em-xl font-bold">2. 直近の実例3件を徹底解剖</h3>
-<p class="text-em-base text-gray-600 mt-1">実際の議論から学ぶ「採用」と「却下」の判断基準</p>
+<div class="bg-gray-50 rounded-xl shadow-lg p-6 flex flex-col border-t-4 border-[#3E9BA4]">
+<div class="text-em-3xl font-bold text-gray-200 mb-2">02</div>
+<h3 class="text-em-lg font-bold mb-2 text-gray-800">直近の実例3件を徹底解剖</h3>
+<p class="text-em-sm text-gray-600 flex-grow">実際の議論から学ぶ「採用」と「却下」の判断基準</p>
+<div class="mt-4 text-em-sm text-gray-400">スライド 12-24</div>
 </div>
 
-<div class="bg-gray-50 rounded-xl shadow p-5 border-l-4 border-[#3E9BA4]">
-<h3 class="text-em-xl font-bold">3. 説得力ある提案の作り方</h3>
-<p class="text-em-base text-gray-600 mt-1">あなたの提案がGoに取り込まれるためのヒント</p>
+<div class="bg-gray-50 rounded-xl shadow-lg p-6 flex flex-col border-t-4 border-[#1B4565]">
+<div class="text-em-3xl font-bold text-gray-200 mb-2">03</div>
+<h3 class="text-em-lg font-bold mb-2 text-gray-800">説得力ある提案の作り方</h3>
+<p class="text-em-sm text-gray-600 flex-grow">あなたの提案がGoに取り込まれるためのヒント</p>
+<div class="mt-4 text-em-sm text-gray-400">スライド 25-29</div>
 </div>
 
 </div>
@@ -170,57 +177,66 @@ _color: #fff
 
 ## Proposal Status の変遷
 
-<div class="mt-6">
+<div class="mt-4">
 
-<!-- フロー図（横）レイアウト -->
-<div class="flex items-center justify-center gap-3 mb-8">
-  <div class="bg-blue-500 text-white rounded-xl px-5 py-4 text-center shadow-lg min-w-[100px]">
-    <p class="text-em-lg font-bold">Incoming</p>
-    <p class="text-em-sm opacity-80">新規</p>
-  </div>
-  <div class="text-blue-400 text-em-2xl font-bold">→</div>
-  <div class="bg-yellow-500 text-white rounded-xl px-5 py-4 text-center shadow-lg min-w-[100px]">
-    <p class="text-em-lg font-bold">Active</p>
-    <p class="text-em-sm opacity-80">議論中</p>
-  </div>
-  <div class="text-yellow-400 text-em-2xl font-bold">→</div>
-  <div class="bg-green-500 text-white rounded-xl px-5 py-4 text-center shadow-lg min-w-[100px]">
-    <p class="text-em-lg font-bold">Likely Accept</p>
-    <p class="text-em-sm opacity-80">採用見込</p>
-  </div>
-  <div class="text-green-400 text-em-2xl font-bold">→</div>
-  <div class="bg-gradient-to-r from-[#1B4565] to-[#3E9BA4] text-white rounded-xl px-5 py-4 text-center shadow-lg min-w-[100px]">
-    <p class="text-em-lg font-bold">Accepted</p>
-    <p class="text-em-sm opacity-80">採用決定</p>
-  </div>
+<!-- タイムラインスタイルのフロー図 -->
+<div class="relative mb-6">
+<div class="absolute top-5 left-12 right-12 h-0.5 bg-gray-300"></div>
+<div class="flex justify-between relative">
+
+<div class="flex flex-col items-center">
+<div class="bg-[#1B4565] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-em-base shadow z-10">1</div>
+<p class="text-em-sm font-bold mt-2">Incoming</p>
+<p class="text-em-xs text-gray-500">新規</p>
+</div>
+
+<div class="flex flex-col items-center">
+<div class="bg-[#3E9BA4] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-em-base shadow z-10">2</div>
+<p class="text-em-sm font-bold mt-2">Active</p>
+<p class="text-em-xs text-gray-500">議論中</p>
+</div>
+
+<div class="flex flex-col items-center">
+<div class="bg-[#3E9BA4] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-em-base shadow z-10">3</div>
+<p class="text-em-sm font-bold mt-2">Likely Accept</p>
+<p class="text-em-xs text-gray-500">採用見込</p>
+</div>
+
+<div class="flex flex-col items-center">
+<div class="bg-gradient-to-r from-[#1B4565] to-[#3E9BA4] text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-em-base shadow z-10">4</div>
+<p class="text-em-sm font-bold mt-2">Accepted</p>
+<p class="text-em-xs text-gray-500">採用決定</p>
+</div>
+
+</div>
 </div>
 
 <div class="grid grid-cols-4 gap-3">
 
-<div class="bg-blue-50 rounded-xl shadow p-3 border-t-4 border-blue-500">
-<p class="text-em-base font-bold">Incoming</p>
-<p class="text-em-sm text-gray-600 mt-1">Triageを待つ状態</p>
+<div class="bg-gray-50 rounded-lg p-3 border-l-4 border-[#1B4565]">
+<p class="text-em-sm font-bold text-gray-800">Incoming</p>
+<p class="text-em-xs text-gray-600 mt-1">Triageを待つ状態</p>
 </div>
 
-<div class="bg-yellow-50 rounded-xl shadow p-3 border-t-4 border-yellow-500">
-<p class="text-em-base font-bold">Active</p>
-<p class="text-em-sm text-gray-600 mt-1">コミュニティ議論中</p>
+<div class="bg-gray-50 rounded-lg p-3 border-l-4 border-[#3E9BA4]">
+<p class="text-em-sm font-bold text-gray-800">Active</p>
+<p class="text-em-xs text-gray-600 mt-1">コミュニティ議論中</p>
 </div>
 
-<div class="bg-green-50 rounded-xl shadow p-3 border-t-4 border-green-500">
-<p class="text-em-base font-bold">Likely Accept</p>
-<p class="text-em-sm text-gray-600 mt-1">1週間の異議申立期間</p>
+<div class="bg-gray-50 rounded-lg p-3 border-l-4 border-[#3E9BA4]">
+<p class="text-em-sm font-bold text-gray-800">Likely Accept</p>
+<p class="text-em-xs text-gray-600 mt-1">1週間の異議申立期間</p>
 </div>
 
-<div class="bg-[#E8F5F5] rounded-xl shadow p-3 border-t-4 border-[#3E9BA4]">
-<p class="text-em-base font-bold">Accepted</p>
-<p class="text-em-sm text-gray-600 mt-1">CLがマージ可能に</p>
+<div class="bg-[#E8F5F5] rounded-lg p-3 border-l-4 border-[#3E9BA4]">
+<p class="text-em-sm font-bold text-gray-800">Accepted</p>
+<p class="text-em-xs text-gray-600 mt-1">CLがマージ可能に</p>
 </div>
 
 </div>
 
-<div class="mt-4 bg-gray-100 rounded-xl p-3 text-center">
-<p class="text-em-base">💡 <strong>Likely Accept</strong> は最終決定ではない。この期間に新たな懸念が出れば再検討される</p>
+<div class="mt-4 bg-gray-50 rounded-lg p-3">
+<p class="text-em-sm text-gray-700 text-center"><strong class="text-[#1B4565]">Likely Accept</strong> は最終決定ではない。この期間に新たな懸念が出れば再検討される</p>
 </div>
 
 </div>
@@ -316,30 +332,30 @@ _color: #fff
 
 ## 「いつでもYes」より「慎重にNo」
 
-<div class="mt-3 bg-gradient-to-r from-[#1B4565] to-[#3E9BA4] text-white rounded-xl p-4">
-<h3 class="text-em-base font-bold mb-1">Goチームの姿勢</h3>
-<p class="text-em-sm">「一度採用すると、Deprecatedにしても実質削除できない。だからこそ、本当に必要かを徹底的に議論する」</p>
+<div class="mt-4 bg-[#1B4565] text-white rounded-lg p-4">
+<p class="text-em-sm italic">"一度採用すると、Deprecatedにしても実質削除できない。だからこそ、本当に必要かを徹底的に議論する"</p>
+<p class="text-em-xs mt-2 opacity-70 text-right">— Goチームの姿勢</p>
 </div>
 
-<div class="grid grid-cols-2 gap-4 mt-4">
+<div class="grid grid-cols-2 gap-6 mt-6">
 
-<div class="bg-red-50 rounded-xl shadow p-3 border-l-4 border-red-400">
-<h3 class="text-em-base font-bold mb-1">❌ 避けたいこと</h3>
-<ul class="text-em-sm text-gray-700 space-y-1">
-<li>似たようなAPIが複数存在</li>
-<li>初心者が迷う選択肢の増加</li>
-<li>メンテナンスコストの増大</li>
-<li>Go 1 Promiseの空洞化</li>
+<div class="bg-gray-50 rounded-lg p-4 border-l-4 border-[#1B4565]">
+<h3 class="text-em-base font-bold mb-3 text-[#1B4565]">避けたいこと</h3>
+<ul class="text-em-sm text-gray-700 space-y-2">
+<li class="flex items-start gap-2"><span class="text-red-500">✕</span>似たようなAPIが複数存在</li>
+<li class="flex items-start gap-2"><span class="text-red-500">✕</span>初心者が迷う選択肢の増加</li>
+<li class="flex items-start gap-2"><span class="text-red-500">✕</span>メンテナンスコストの増大</li>
+<li class="flex items-start gap-2"><span class="text-red-500">✕</span>Go 1 Promiseの空洞化</li>
 </ul>
 </div>
 
-<div class="bg-green-50 rounded-xl shadow p-3 border-l-4 border-green-400">
-<h3 class="text-em-base font-bold mb-1">✅ 目指すこと</h3>
-<ul class="text-em-sm text-gray-700 space-y-1">
-<li>明確で一貫したAPI</li>
-<li>学習コストの最小化</li>
-<li>長期的なメンテナンス性</li>
-<li>後方互換性の堅持</li>
+<div class="bg-gray-50 rounded-lg p-4 border-l-4 border-[#3E9BA4]">
+<h3 class="text-em-base font-bold mb-3 text-[#3E9BA4]">目指すこと</h3>
+<ul class="text-em-sm text-gray-700 space-y-2">
+<li class="flex items-start gap-2"><span class="text-[#3E9BA4]">✓</span>明確で一貫したAPI</li>
+<li class="flex items-start gap-2"><span class="text-[#3E9BA4]">✓</span>学習コストの最小化</li>
+<li class="flex items-start gap-2"><span class="text-[#3E9BA4]">✓</span>長期的なメンテナンス性</li>
+<li class="flex items-start gap-2"><span class="text-[#3E9BA4]">✓</span>後方互換性の堅持</li>
 </ul>
 </div>
 
@@ -636,10 +652,10 @@ github.com/golang/go/issues/69772
 
 <div class="mt-4">
 
-<div class="grid grid-cols-2 gap-4">
+<div class="grid grid-cols-2 gap-6">
 
-<div class="bg-red-50 rounded-xl shadow p-4 border-l-4 border-red-400">
-<h3 class="text-em-lg font-bold mb-2">❌ Before（煩雑）</h3>
+<div class="bg-gray-50 rounded-lg p-4 border-l-4 border-[#1B4565]">
+<h3 class="text-em-base font-bold mb-3 text-[#1B4565]">Before（煩雑）</h3>
 <div class="bg-gray-900 text-gray-100 rounded-lg p-3 font-mono text-xs">
 
 ```go
@@ -648,11 +664,11 @@ end := token.Pos(f.Base() + f.Size())
 ```
 
 </div>
-<p class="text-em-base text-gray-600 mt-2">内部実装の知識が必要、間違えやすい</p>
+<p class="text-em-sm text-gray-600 mt-3">内部実装の知識が必要、間違えやすい</p>
 </div>
 
-<div class="bg-green-50 rounded-xl shadow p-4 border-l-4 border-green-400">
-<h3 class="text-em-lg font-bold mb-2">✅ After（シンプル）</h3>
+<div class="bg-[#E8F5F5] rounded-lg p-4 border-l-4 border-[#3E9BA4]">
+<h3 class="text-em-base font-bold mb-3 text-[#3E9BA4]">After（シンプル）</h3>
 <div class="bg-gray-900 text-gray-100 rounded-lg p-3 font-mono text-xs">
 
 ```go
@@ -661,17 +677,17 @@ end := f.End()
 ```
 
 </div>
-<p class="text-em-base text-gray-600 mt-2">意図が明確、間違いようがない</p>
+<p class="text-em-sm text-gray-600 mt-3">意図が明確、間違いようがない</p>
 </div>
 
 </div>
 
-<div class="mt-4 bg-[#E8F5F5] rounded-xl shadow p-4">
-<h3 class="text-em-lg font-bold">💡 採用のポイント</h3>
-<ul class="text-em-base text-gray-700 mt-2 space-y-1">
-<li>**明確な課題**: goplsチーム内で繰り返し必要とされていた</li>
-<li>**最小限の変更**: 1メソッド・5行追加のみ、破壊的変更なし</li>
-<li>**信頼できる提案者**: Goチームメンバーによる提案</li>
+<div class="mt-5 bg-gray-50 rounded-lg p-4">
+<h3 class="text-em-base font-bold text-[#1B4565] mb-2">採用のポイント</h3>
+<ul class="text-em-sm text-gray-700 space-y-1">
+<li class="flex items-start gap-2"><span class="text-[#3E9BA4]">✓</span><strong>明確な課題</strong>: goplsチーム内で繰り返し必要とされていた</li>
+<li class="flex items-start gap-2"><span class="text-[#3E9BA4]">✓</span><strong>最小限の変更</strong>: 1メソッド・5行追加のみ、破壊的変更なし</li>
+<li class="flex items-start gap-2"><span class="text-[#3E9BA4]">✓</span><strong>信頼できる提案者</strong>: Goチームメンバーによる提案</li>
 </ul>
 </div>
 
@@ -817,63 +833,43 @@ type Conn struct { Conn net.Conn; LocalAddr net.Addr }
 
 ## 提案を採用されやすくするコツ
 
-<div class="grid grid-cols-2 gap-3 mt-3">
+<div class="grid grid-cols-3 gap-4 mt-6">
 
-<div class="space-y-2">
-
-<div class="flex items-center gap-2 bg-gray-50 rounded-xl shadow p-2">
-<span class="text-em-xl font-bold text-[#1B4565]">1</span>
-<div>
-<p class="text-em-base font-bold">課題を具体的に示す</p>
-<p class="text-em-sm text-gray-600">「〇〇で困っている」を明確に</p>
-</div>
+<div class="bg-gray-50 rounded-xl shadow p-4">
+<div class="text-em-2xl font-bold text-[#1B4565] mb-2">1</div>
+<p class="text-em-base font-bold text-gray-800">課題を具体的に示す</p>
+<p class="text-em-sm text-gray-600 mt-1">「〇〇で困っている」を明確に</p>
 </div>
 
-<div class="flex items-center gap-2 bg-gray-50 rounded-xl shadow p-2">
-<span class="text-em-xl font-bold text-[#3E9BA4]">2</span>
-<div>
-<p class="text-em-base font-bold">現状の回避策の問題点</p>
-<p class="text-em-sm text-gray-600">なぜ不十分か説明する</p>
-</div>
+<div class="bg-gray-50 rounded-xl shadow p-4">
+<div class="text-em-2xl font-bold text-[#3E9BA4] mb-2">2</div>
+<p class="text-em-base font-bold text-gray-800">現状の回避策の問題点</p>
+<p class="text-em-sm text-gray-600 mt-1">なぜ不十分か説明する</p>
 </div>
 
-<div class="flex items-center gap-2 bg-gray-50 rounded-xl shadow p-2">
-<span class="text-em-xl font-bold text-[#1B4565]">3</span>
-<div>
-<p class="text-em-base font-bold">後方互換性への配慮</p>
-<p class="text-em-sm text-gray-600">既存コードへの影響を最小限に</p>
-</div>
+<div class="bg-gray-50 rounded-xl shadow p-4">
+<div class="text-em-2xl font-bold text-[#1B4565] mb-2">3</div>
+<p class="text-em-base font-bold text-gray-800">後方互換性への配慮</p>
+<p class="text-em-sm text-gray-600 mt-1">既存コードへの影響を最小限に</p>
 </div>
 
+<div class="bg-gray-50 rounded-xl shadow p-4">
+<div class="text-em-2xl font-bold text-[#3E9BA4] mb-2">4</div>
+<p class="text-em-base font-bold text-gray-800">実装の複雑さを見積もる</p>
+<p class="text-em-sm text-gray-600 mt-1">メンテナンスコストも考慮</p>
 </div>
 
-<div class="space-y-2">
-
-<div class="flex items-center gap-2 bg-gray-50 rounded-xl shadow p-2">
-<span class="text-em-xl font-bold text-[#3E9BA4]">4</span>
-<div>
-<p class="text-em-base font-bold">実装の複雑さを見積もる</p>
-<p class="text-em-sm text-gray-600">メンテナンスコストも考慮</p>
-</div>
+<div class="bg-gray-50 rounded-xl shadow p-4">
+<div class="text-em-2xl font-bold text-[#1B4565] mb-2">5</div>
+<p class="text-em-base font-bold text-gray-800">他言語での事例を調査</p>
+<p class="text-em-sm text-gray-600 mt-1">先行事例があると説得力が増す</p>
 </div>
 
-<div class="flex items-center gap-2 bg-gray-50 rounded-xl shadow p-2">
-<span class="text-em-xl font-bold text-[#1B4565]">5</span>
-<div>
-<p class="text-em-base font-bold">他言語での事例を調査</p>
-<p class="text-em-sm text-gray-600">先行事例があると説得力が増す</p>
-</div>
-</div>
-
-<div class="flex items-center gap-2 rounded-xl shadow p-2"
+<div class="rounded-xl shadow-lg p-4"
      style="background: linear-gradient(135deg, #1B4565 0%, #3E9BA4 100%);">
-<span class="text-em-xl font-bold text-white">6</span>
-<div>
+<div class="text-em-2xl font-bold text-white mb-2">6</div>
 <p class="text-em-base font-bold text-white">実装CLを準備する</p>
-<p class="text-em-sm text-white/80">「動くコード」は最強の説得材料</p>
-</div>
-</div>
-
+<p class="text-em-sm text-white/80 mt-1">「動くコード」は最強の説得材料</p>
 </div>
 
 </div>
@@ -884,9 +880,9 @@ type Conn struct { Conn net.Conn; LocalAddr net.Addr }
 
 <div class="grid grid-cols-2 gap-3 mt-3">
 
-<div class="bg-red-50 rounded-xl shadow p-3 border-l-4 border-red-400">
-<h3 class="text-em-base font-bold mb-1">❌ 避けるべきこと</h3>
-<ul class="text-em-sm text-gray-700 space-y-1">
+<div class="bg-gray-50 rounded-xl shadow p-3 border-l-4 border-[#1B4565]">
+<h3 class="text-em-sm font-bold mb-1 text-[#1B4565]">避けるべきこと</h3>
+<ul class="text-em-xs text-gray-700 space-y-0.5">
 <li>「他の言語にあるから」だけの理由</li>
 <li>抽象的な「便利になる」という主張</li>
 <li>大きすぎるスコープの提案</li>
@@ -895,9 +891,9 @@ type Conn struct { Conn net.Conn; LocalAddr net.Addr }
 </ul>
 </div>
 
-<div class="bg-green-50 rounded-xl shadow p-3 border-l-4 border-green-400">
-<h3 class="text-em-base font-bold mb-1">✅ 効果的なアプローチ</h3>
-<ul class="text-em-sm text-gray-700 space-y-1">
+<div class="bg-gray-50 rounded-xl shadow p-3 border-l-4 border-[#3E9BA4]">
+<h3 class="text-em-sm font-bold mb-1 text-[#3E9BA4]">効果的なアプローチ</h3>
+<ul class="text-em-xs text-gray-700 space-y-0.5">
 <li>小さく始めて段階的に拡張</li>
 <li>具体的なコード例を添える</li>
 <li>既存のIssueやDiscussionを参照</li>
@@ -908,9 +904,9 @@ type Conn struct { Conn net.Conn; LocalAddr net.Addr }
 
 </div>
 
-<div class="mt-3 bg-[#E8F5F5] rounded-xl shadow p-3 text-center">
-<p class="text-em-base"><strong>💡 Goチームも含め、全員が同じプロセスを経る</strong></p>
-<p class="text-em-sm text-gray-600 mt-1">特別扱いはない。良い提案は誰からでも採用される</p>
+<div class="mt-3 bg-gray-100 rounded-xl shadow p-3 text-center">
+<p class="text-em-sm text-gray-800"><strong>Goチームも含め、全員が同じプロセスを経る</strong></p>
+<p class="text-em-xs text-gray-600 mt-1">特別扱いはない。良い提案は誰からでも採用される</p>
 </div>
 
 ---

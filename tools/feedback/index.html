@@ -35,7 +35,7 @@
     </div>
     <div class="flex items-center gap-2">
       <button onclick="prevSlide()" class="bg-navy-800 hover:bg-gray-600 px-3 py-1 rounded">←</button>
-      <span id="slideCounter" class="text-sm">1 / 40</span>
+      <span id="slideCounter" class="text-sm min-w-[120px] text-center">スライド 1 / 29</span>
       <button onclick="nextSlide()" class="bg-navy-800 hover:bg-gray-600 px-3 py-1 rounded">→</button>
       <button onclick="openInNewTab()" class="bg-navy-800 hover:bg-gray-600 px-3 py-1 rounded text-sm ml-4">新しいタブで開く</button>
       <button onclick="toggleFullscreen()" class="bg-navy-800 hover:bg-gray-600 px-3 py-1 rounded text-sm">フルスクリーン</button>
@@ -125,15 +125,16 @@
 
   <script>
     // 状態管理
-    let currentSlide = 1;
-    let totalSlides = 1;  // 初期値は1、後でMarpから取得
+    let currentSlide = 1;      // Markdownファイル内の実際のスライド番号（1ベース）
+    let totalSlides = 1;       // 初期値は1、後でMarpから取得
+    let pageOffset = 0;        // _paginate: falseのスライド数（ページ番号のオフセット）
     let comments = {};
     let currentSlideFile = 'example.md';
 
     // Marpサーバーのベース URL（プロキシ経由）
     const MARP_BASE_URL = '/marp';
 
-    // Marpサーバーからスライド総数を取得
+    // Marpサーバーからスライド総数とページオフセットを取得
     async function fetchTotalSlides() {
       try {
         const response = await fetch(`${MARP_BASE_URL}/${currentSlideFile}`);
@@ -144,6 +145,22 @@
         const sections = doc.querySelectorAll('section');
         if (sections.length > 0) {
           totalSlides = sections.length;
+
+          // _paginate: falseのスライド数をカウント（ページ番号オフセット）
+          // data-marpit-pagination属性がないsectionがpaginate: falseのスライド
+          let offset = 0;
+          sections.forEach((section, index) => {
+            // ページ番号が表示されていないスライドをカウント
+            // 最初のスライドより前にあるpaginate:falseのスライドのみカウント
+            if (!section.hasAttribute('data-marpit-pagination') && index < sections.length - 1) {
+              // 先頭から連続するpaginate:falseのスライドをカウント
+              if (index === offset) {
+                offset++;
+              }
+            }
+          });
+          pageOffset = offset;
+          console.log(`Total slides: ${totalSlides}, Page offset: ${pageOffset}`);
         }
         updateSlideCounter();
       } catch (e) {
@@ -153,7 +170,8 @@
 
     // スライドカウンター更新
     function updateSlideCounter() {
-      document.getElementById('slideCounter').textContent = `${currentSlide} / ${totalSlides}`;
+      // 「スライド X / Y」形式で表示（Marpのページ番号ではなくMarkdownファイル内の連番）
+      document.getElementById('slideCounter').textContent = `スライド ${currentSlide} / ${totalSlides}`;
       document.getElementById('slideTitle').textContent = `スライド ${currentSlide}`;
     }
 
@@ -244,10 +262,20 @@
       const frame = document.getElementById('slideFrame');
 
       // プロキシ経由でMarpサーバーにアクセス
-      // example.md → /marp/example.md#1
-      // go-conference-2026/slide.md → /marp/go-conference-2026/slide.md#1
+      // Marpの#Nはページ番号を使用するため、オフセットを考慮
+      // currentSlide: Markdownの実際のスライド番号（1ベース）
+      // Marpページ番号: currentSlide - pageOffset（_paginate:falseの分を引く）
+      // ただし、オフセット内のスライドはページ番号がないので、スライドインデックスを使用
       const slidePath = currentSlideFile;
-      frame.src = `${MARP_BASE_URL}/${slidePath}#${currentSlide}`;
+      let marpPageNum;
+      if (currentSlide <= pageOffset) {
+        // paginate:falseのスライドはそのままのインデックスを使用
+        marpPageNum = currentSlide;
+      } else {
+        // paginate:trueのスライドはオフセットを引いたページ番号を使用
+        marpPageNum = currentSlide - pageOffset;
+      }
+      frame.src = `${MARP_BASE_URL}/${slidePath}#${marpPageNum}`;
 
       updateSlideCounter();
       renderCurrentSlideComments();
@@ -414,7 +442,13 @@
 
     // 新しいタブで開く
     function openInNewTab() {
-      window.open(`${MARP_BASE_URL}/${currentSlideFile}#${currentSlide}`, '_blank');
+      let marpPageNum;
+      if (currentSlide <= pageOffset) {
+        marpPageNum = currentSlide;
+      } else {
+        marpPageNum = currentSlide - pageOffset;
+      }
+      window.open(`${MARP_BASE_URL}/${currentSlideFile}#${marpPageNum}`, '_blank');
     }
 
     // レイアウトモーダル
