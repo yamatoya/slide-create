@@ -62,6 +62,20 @@ open http://localhost:3333
 open http://localhost:8888
 ```
 
+### スクリーンショット
+
+**スライドプレビュー（Marp）**
+
+![スライド - タイトル](docs/images/feedback-01-slide.png)
+
+![スライド - 目次](docs/images/feedback-02-toc.png)
+
+**フィードバックUI**
+
+![フィードバックUI](docs/images/feedback-03-ui.png)
+
+### 使い方
+
 1. スライドを1枚ずつ確認
 2. 修正が必要な箇所にコメントを追加
 3. 「JSONを出力」ボタンでフィードバックをコピー
