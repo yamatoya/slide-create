@@ -10,3 +10,6 @@ dist/
 # Editor
 .vscode/
 *.swp
+
+# Sample PDFs (copyrighted materials)
+sample/

@@ -8,12 +8,13 @@
 """
 
 import http.server
-import socketserver
-import urllib.request
-import urllib.error
+import mimetypes
 import os
-import sys
 import re
+import socketserver
+import sys
+import urllib.error
+import urllib.request
 
 MARP_PORT = int(os.environ.get('MARP_PORT', 3333))
 FEEDBACK_PORT = int(os.environ.get('FEEDBACK_PORT', 8888))
@@ -32,18 +33,23 @@ section { pointer-events: auto !important; }
 
 class ProxyHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
-        # /marp/* へのリクエストをMarpサーバーに転送
         if self.path.startswith('/marp/'):
-            self.proxy_to_marp(self.path[5:])  # '/marp' を除去
-        # /themes/* へのリクエストはプロジェクトルートのthemesフォルダから提供
+            self.proxy_to_marp(self.path[5:])
         elif self.path.startswith('/themes/'):
             self.serve_themes_file(self.path)
         else:
             super().do_GET()
 
+    def send_content(self, content, content_type):
+        """レスポンスを送信する共通メソッド"""
+        self.send_response(200)
+        self.send_header('Content-Type', content_type)
+        self.send_header('Content-Length', len(content))
+        self.end_headers()
+        self.wfile.write(content)
+
     def serve_themes_file(self, path):
         """プロジェクトルートのthemesフォルダからファイルを提供"""
-        # /themes/js/foo.js -> PROJECT_ROOT/themes/js/foo.js
         file_path = os.path.normpath(os.path.join(PROJECT_ROOT, path.lstrip('/')))
 
         # セキュリティチェック: PROJECT_ROOT外へのアクセスを防止
@@ -51,24 +57,15 @@ class ProxyHandler(http.server.SimpleHTTPRequestHandler):
             self.send_error(403, 'Forbidden')
             return
 
-        if not os.path.exists(file_path) or not os.path.isfile(file_path):
+        if not os.path.isfile(file_path):
             self.send_error(404, 'File not found')
             return
 
-        # Content-Typeを推測
-        import mimetypes
-        content_type, _ = mimetypes.guess_type(file_path)
-        if content_type is None:
-            content_type = 'application/octet-stream'
+        content_type = mimetypes.guess_type(file_path)[0] or 'application/octet-stream'
 
         try:
             with open(file_path, 'rb') as f:
-                content = f.read()
-            self.send_response(200)
-            self.send_header('Content-Type', content_type)
-            self.send_header('Content-Length', len(content))
-            self.end_headers()
-            self.wfile.write(content)
+                self.send_content(f.read(), content_type)
         except IOError as e:
             self.send_error(500, str(e))
 
@@ -80,15 +77,10 @@ class ProxyHandler(http.server.SimpleHTTPRequestHandler):
                 content = response.read()
                 content_type = response.headers.get('Content-Type', 'text/html')
 
-                # HTMLの場合、ナビゲーション非表示用CSSを注入
                 if 'text/html' in content_type:
                     content = self.inject_hide_nav_css(content)
 
-                self.send_response(200)
-                self.send_header('Content-Type', content_type)
-                self.send_header('Content-Length', len(content))
-                self.end_headers()
-                self.wfile.write(content)
+                self.send_content(content, content_type)
         except urllib.error.HTTPError as e:
             self.send_error(e.code, str(e.reason))
         except urllib.error.URLError as e:

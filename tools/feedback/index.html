@@ -28,7 +28,6 @@
     <div class="flex items-center gap-4">
       <h1 class="font-bold">Slide Feedback</h1>
       <select id="slideSelect" class="bg-navy-800 text-white px-3 py-1 rounded text-sm">
-        <option value="example.md">example.md</option>
         <option value="go-conference-2026/slide.md">go-conference-2026</option>
         <option value="internal-study-202602/slide.md">internal-study-202602</option>
       </select>
@@ -257,44 +256,30 @@
       });
     }
 
+    // Marpページ番号を計算（paginate:falseのオフセットを考慮）
+    function getMarpPageNum(slideNum) {
+      return slideNum <= pageOffset ? slideNum : slideNum - pageOffset;
+    }
+
     // スライドフレーム更新
     function updateSlideFrame() {
       const frame = document.getElementById('slideFrame');
-
-      // プロキシ経由でMarpサーバーにアクセス
-      // Marpの#Nはページ番号を使用するため、オフセットを考慮
-      // currentSlide: Markdownの実際のスライド番号（1ベース）
-      // Marpページ番号: currentSlide - pageOffset（_paginate:falseの分を引く）
-      // ただし、オフセット内のスライドはページ番号がないので、スライドインデックスを使用
-      const slidePath = currentSlideFile;
-      let marpPageNum;
-      if (currentSlide <= pageOffset) {
-        // paginate:falseのスライドはそのままのインデックスを使用
-        marpPageNum = currentSlide;
-      } else {
-        // paginate:trueのスライドはオフセットを引いたページ番号を使用
-        marpPageNum = currentSlide - pageOffset;
-      }
-      frame.src = `${MARP_BASE_URL}/${slidePath}#${marpPageNum}`;
-
+      frame.src = `${MARP_BASE_URL}/${currentSlideFile}#${getMarpPageNum(currentSlide)}`;
       updateSlideCounter();
       renderCurrentSlideComments();
     }
 
     // ナビゲーション
-    function prevSlide() {
-      if (currentSlide > 1) {
-        currentSlide--;
+    function navigateSlide(delta) {
+      const newSlide = currentSlide + delta;
+      if (newSlide >= 1 && newSlide <= totalSlides) {
+        currentSlide = newSlide;
         updateSlideFrame();
       }
     }
 
-    function nextSlide() {
-      if (currentSlide < totalSlides) {
-        currentSlide++;
-        updateSlideFrame();
-      }
-    }
+    function prevSlide() { navigateSlide(-1); }
+    function nextSlide() { navigateSlide(1); }
 
     // キーボードショートカット
     document.addEventListener('keydown', (e) => {
@@ -442,25 +427,18 @@
 
     // 新しいタブで開く
     function openInNewTab() {
-      let marpPageNum;
-      if (currentSlide <= pageOffset) {
-        marpPageNum = currentSlide;
-      } else {
-        marpPageNum = currentSlide - pageOffset;
-      }
-      window.open(`${MARP_BASE_URL}/${currentSlideFile}#${marpPageNum}`, '_blank');
+      window.open(`${MARP_BASE_URL}/${currentSlideFile}#${getMarpPageNum(currentSlide)}`, '_blank');
     }
 
     // レイアウトモーダル
-    function openLayoutModal() {
-      document.getElementById('layoutModal').classList.remove('hidden');
-      document.getElementById('layoutModal').classList.add('flex');
+    function setLayoutModalVisible(visible) {
+      const modal = document.getElementById('layoutModal');
+      modal.classList.toggle('hidden', !visible);
+      modal.classList.toggle('flex', visible);
     }
 
-    function closeLayoutModal() {
-      document.getElementById('layoutModal').classList.add('hidden');
-      document.getElementById('layoutModal').classList.remove('flex');
-    }
+    function openLayoutModal() { setLayoutModalVisible(true); }
+    function closeLayoutModal() { setLayoutModalVisible(false); }
 
     function selectLayout(id, name) {
       const textarea = document.getElementById('newComment');
@@ -473,32 +451,25 @@
     // レイアウトパターン表示（SVGサムネイル使用）
     function renderLayoutPatterns() {
       const container = document.getElementById('layoutPatterns');
-      let html = '';
 
-      Object.entries(layoutPatterns).forEach(([category, patterns]) => {
-        html += `<h4 class="font-bold text-gray-700 mt-6 mb-3 first:mt-0">${category}</h4>`;
-        html += '<div class="grid grid-cols-3 gap-4">';
+      const renderPattern = (p) => `
+        <div class="pattern-card border border-gray-200 rounded-lg overflow-hidden cursor-pointer transition-all hover:border-teal-500 hover:shadow-md"
+             onclick="selectLayout('${p.id}', '${p.name}')">
+          <div class="bg-gray-50 p-2 flex items-center justify-center" style="height: 100px;">
+            <img src="svg/${p.svg}" alt="${p.name}" class="w-full h-full object-contain" />
+          </div>
+          <div class="p-2 bg-white border-t border-gray-100">
+            <div class="text-xs text-teal-600 font-medium">${p.id}</div>
+            <div class="text-sm font-bold text-gray-800">${p.name}</div>
+            <div class="text-xs text-gray-500 mt-0.5">${p.desc}</div>
+          </div>
+        </div>`;
 
-        patterns.forEach(p => {
-          html += `
-            <div class="pattern-card border border-gray-200 rounded-lg overflow-hidden cursor-pointer transition-all hover:border-teal-500 hover:shadow-md"
-                 onclick="selectLayout('${p.id}', '${p.name}')">
-              <div class="bg-gray-50 p-2 flex items-center justify-center" style="height: 100px;">
-                <img src="svg/${p.svg}" alt="${p.name}" class="w-full h-full object-contain" />
-              </div>
-              <div class="p-2 bg-white border-t border-gray-100">
-                <div class="text-xs text-teal-600 font-medium">${p.id}</div>
-                <div class="text-sm font-bold text-gray-800">${p.name}</div>
-                <div class="text-xs text-gray-500 mt-0.5">${p.desc}</div>
-              </div>
-            </div>
-          `;
-        });
+      const renderCategory = ([category, patterns]) => `
+        <h4 class="font-bold text-gray-700 mt-6 mb-3 first:mt-0">${category}</h4>
+        <div class="grid grid-cols-3 gap-4">${patterns.map(renderPattern).join('')}</div>`;
 
-        html += '</div>';
-      });
-
-      container.innerHTML = html;
+      container.innerHTML = Object.entries(layoutPatterns).map(renderCategory).join('');
     }
 
     // エスケープ
